@@ -1,4 +1,4 @@
-#include "TriangleFace.h"
+#include "Face.h"
 
 // Line
 Line::Line(unsigned int _id0, unsigned int _id1) {

@@ -19,8 +19,8 @@ ShaderProgramme::ShaderProgramme(const char* vertName, const char* fragName) {
 	glAttachShader(programme, *vertex->GetShader());
 	glAttachShader(programme, *fragment->GetShader());
 
-	glBindAttribLocation(programme, 0, "VertexPosition");
-	glBindAttribLocation(programme, 1, "VertexColour");
+	/*glBindAttribLocation(programme, 0, "VertexPosition");
+	glBindAttribLocation(programme, 1, "VertexColour");*/
 
 	glLinkProgram(programme);
 

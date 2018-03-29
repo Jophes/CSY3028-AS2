@@ -32,10 +32,12 @@ void Model::Draw() {
 
 	// USE MATERIAL DATA
 
-	GLuint location = glGetUniformLocation(material->shaderProg->programme, "MV");
+	GLuint location = glGetUniformLocation(*material->GetShaderProg(), "MV");
 	glUniformMatrix4fv(location, 1, GL_FALSE, &mv[0][0]);
-	location = glGetUniformLocation(material->shaderProg->programme, "MVP");
+	location = glGetUniformLocation(*material->GetShaderProg(), "MVP");
 	glUniformMatrix4fv(location, 1, GL_FALSE, &mvp[0][0]);
+
+	glUniform1i(glGetUniformLocation(*material->GetShaderProg(), "Tex"), 0);
 
 	glBindVertexArray(mesh->vertexArrayObject);
 	glDrawArrays(GL_TRIANGLES, 0, mesh->vertexCount);

@@ -3,10 +3,14 @@
 #include <vector>
 #include <string>
 
-class Line {
+enum VertMode { Vert, VertNorms, VertNormsTexs, None };
+class Vertex {
 public:
-	unsigned int id0, id1;
-	Line(unsigned int _id0, unsigned int _id1);
+	VertMode mode = VertMode::None;
+	unsigned int v, vt, vn;
+	Vertex(unsigned int v);
+	Vertex(unsigned int v, unsigned int vn);
+	Vertex(unsigned int v, unsigned int vt, unsigned int vn);
 	std::string ToString();
 };
 
@@ -14,6 +18,6 @@ class Face {
 public:
 	Face();
 	~Face();
-	std::vector<Line> lines;
+	std::vector<Vertex> verts;
 	std::string ToString();
 };

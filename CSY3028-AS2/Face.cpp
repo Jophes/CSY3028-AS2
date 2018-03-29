@@ -1,18 +1,37 @@
 #include "Face.h"
 
 // Line
-Line::Line(unsigned int _id0, unsigned int _id1) {
-	id0 = _id0;
-	id1 = _id1;
+Vertex::Vertex(unsigned int v) {
+	this->v = v;
+	mode = VertMode::Vert;
+}
+Vertex::Vertex(unsigned int v, unsigned int vn) {
+	this->v = v;
+	this->vn = vn;
+	mode = VertMode::VertNorms;
+}
+Vertex::Vertex(unsigned int v, unsigned int vt, unsigned int vn) {
+	this->v = v;
+	this->vt = vt;
+	this->vn = vn;
+	mode = VertMode::VertNormsTexs;
 }
 
-std::string Line::ToString() {
-	return std::to_string(id0 + 1) + "//" + std::to_string(id1 + 1);
+std::string Vertex::ToString() {
+	if (mode == VertMode::Vert) {
+		return std::to_string(v);
+	}
+	else if (mode == VertMode::VertNorms) {
+		return std::to_string(v) + "//" + std::to_string(vn);
+	}
+	else if (mode == VertMode::VertNormsTexs) {
+		return std::to_string(v) + "/" + std::to_string(vn) + "/" + std::to_string(vt);
+	}
 }
 
 // Face
 Face::Face() {
-	lines = std::vector<Line>();
+	verts = std::vector<Vertex>();
 }
 
 Face::~Face() {
@@ -20,9 +39,9 @@ Face::~Face() {
 
 std::string Face::ToString() {
 	std::string str = "f ";
-	for (unsigned int i = 0; i < lines.size(); i++)
+	for (unsigned int i = 0; i < verts.size(); i++)
 	{
-		str += lines[i].ToString() + (i < lines.size() - 1 ? " " : "");
+		str += verts[i].ToString() + (i < verts.size() - 1 ? " " : "");
 	}
 	return str;
 }

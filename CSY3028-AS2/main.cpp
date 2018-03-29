@@ -1,23 +1,20 @@
-
 #include <Windows.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtx\transform2.hpp>
+
 #include <gl\glew.h>
 #include <gl\glut.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
 
-#include <vector>
-#include <fstream>
 #include <iostream>
-#include <sstream>
-#include <iterator>
 #include <time.h>
 
 #include "Camera.h"
+#include "Texture.h"
 #include "Model.h"
 #include "ShaderProgramme.h"
 
@@ -25,66 +22,16 @@ double secs, lastSecs;
 ShaderProgramme programme;
 Mesh mesh;
 Camera camera;
+Texture texture;
 Material material;
 Model model;
-//glm::mat4 viewMatrix, projMatrix;
+
+//std::vector<Model> models;
 
 static double getSecs(void) {
 	struct timespec ts;
 	timespec_get(&ts, TIME_UTC);
 	return (double)(ts.tv_sec) + (double)(ts.tv_nsec) / 1000000000L;
-}
-
-std::vector<Mesh> importObj(std::string fileDir) {
-	std::vector<Mesh> meshes;
-	std::ifstream file(fileDir);
-	std::string line;
-	while (std::getline(file, line)) {
-		std::istringstream iss(line);
-		std::vector<std::string> result{ std::istream_iterator<std::string>(iss),{} };
-		if ((int)result.size() > 0) {
-			if (result[0] == "#") {
-				//std::cout << "# ";
-				/*for (unsigned int i = 1; i < result.size(); i++) {
-					std::cout << result[i] + (i < result.size() - 1 ? " " : "");
-				}*/
-			}
-			else if (result[0] == "o") {
-				meshes.push_back(Mesh());
-				meshes.back().name = result[1];
-				//std::cout << "o " + meshes.back().name;
-			}
-			else if (result[0] == "v") {
-				meshes.back().vertices.push_back(Vec3(atof(result[1].c_str()), atof(result[2].c_str()), atof(result[3].c_str())));
-				//std::cout << "v " + meshes.back().vertices.back().ToString();
-			}
-			else if (result[0] == "vn") {
-				meshes.back().normals.push_back(Vec3(atof(result[1].c_str()), atof(result[2].c_str()), atof(result[3].c_str())));
-				//std::cout << "vn " + meshes.back().normals.back().ToString();
-			}
-			else if (result[0] == "s") {
-				//std::cout << "s " + result[1];
-			}
-			else if (result[0] == "f") {
-				meshes.back().faces.push_back(Face());
-				for (unsigned int i = 1; i < result.size(); i++) {
-					std::stringstream test(result[i]);
-					std::string segment;
-					std::vector<std::string> seglist;
-
-					while (std::getline(test, segment, '/')) {
-						if (segment != "") {
-							seglist.push_back(segment);
-						}
-					}
-					meshes.back().faces.back().lines.push_back(Line((unsigned int)atof(seglist[0].c_str()) - 1, (unsigned int)atof(seglist[1].c_str()) - 1));
-				}
-				//std::cout << meshes.back().faces.back().ToString();
-			}
-		}
-		//std::cout << std::endl;
-	}
-	return meshes;
 }
 
 void reshape(int width, int height) {
@@ -105,6 +52,11 @@ void display() {
 
 	model.rotation.y += deltaTime;
 	model.Draw();
+	/*for (GLuint i = 0; i < models.size(); i++)
+	{
+		models[i].rotation.y += deltaTime;
+		models[i].Draw();
+	}*/
 
 	// Swap buffers, call redisplay
 	glutSwapBuffers();
@@ -112,11 +64,10 @@ void display() {
 }
 
 int main(int argc, char **argv) {
-
 	// Import the object cube
-	std::vector<Mesh> meshes = importObj("monkey1.obj");
+	std::vector<Mesh> meshes = Mesh::ImportMeshes("cube4.obj");
 	if (meshes.size() > 0) {
-		mesh = meshes.front();
+		mesh = meshes[0];
 	}
 
 	// Setup glut
@@ -143,16 +94,26 @@ int main(int argc, char **argv) {
 	//glEnableClientState(GL_VERTEX_ARRAY);
 	
 	// Compile shaders
-	programme = ShaderProgramme("shader.vert", "shader.frag");
+	//programme = ShaderProgramme("shader.vert", "shader.frag");
+	programme = ShaderProgramme("phong.vert", "phong.frag");
 
 	// Generate objects
-	mesh.Init();
+	//mesh.Init(&programme);
 
 	// Create material
+	texture = Texture("sun.bmp");
+	texture.Init(GL_TEXTURE0);
 	material = Material(&programme);
 
-	// Create material
+	// Create model
 	model = Model(&camera, &mesh, &material);
+	/*for (GLuint i = 0; i < 32; i++)
+	{
+		models.push_back(Model(&camera, &mesh, &material));
+		models.back().position = glm::vec3((rand() % 400) / 100.0f - 2, (rand() % 400) / 100.0f - 2, (rand() % 400) / 100.0f - 2);
+		models.back().scale = glm::vec3(0.1f + (rand() % 90) / 100.0f, 0.1f + (rand() % 90) / 100.0f, 0.1f + (rand() % 90) / 100.0f);
+
+	}*/
 
 	secs = getSecs();
 	lastSecs = secs;

@@ -135,6 +135,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -146,10 +147,13 @@
     <ClInclude Include="Face.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cube.mtl" />
+    <None Include="phong.frag" />
+    <None Include="phong.vert" />
     <None Include="shader.frag" />
     <None Include="shader.vert" />
   </ItemGroup>

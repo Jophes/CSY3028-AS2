@@ -1,71 +1,44 @@
 #version 440   
-in  vec4 P;
-in  vec3 N;
-in  vec2 TexCoord;
-
-out vec4 FragColor;
-
-uniform sampler2D Tex;
-uniform sampler2D NormalTex;
-
-uniform mat4 View;
 
 struct LightInfo {
-	vec4 LightPosition;
-	vec3 La;
-	vec3 L;
+    vec3 Position;
+    vec3 La;
+    vec3 Ld;
+	vec3 Ls;
 };
 uniform LightInfo Light;
 
 struct MaterialInfo {
-	vec3 Ka;
-	vec3 Kd;
-	vec3 Ks;
-	float  Shininess;
+    vec3 Ka;
+    vec3 Kd;
+    vec3 Ks;
+    float Shininess;
 };
 uniform MaterialInfo Material;
 
-vec3 phoneShading(vec3 N, vec4 P, out vec3 dif) {
-	vec4 LightP = View * Light.LightPosition;
-	vec3 L = normalize(vec3(LightP - P));
-	vec3 V = normalize(vec3(vec4(0.0, 0.0, 0.0, 1.0) - P));
-	vec3 H = normalize(L + V); 
+in vec3 Position;
+in vec3 Normal;
+in vec2 TexCoord;
 
-	float LDotN  = dot(L, N); 
-	float HDotN  = max(dot(H, N), 0.0);
+uniform mat4 View;
 
-	vec3 ambient = Light.La * Material.Ka;
-	vec3 diffuse = Light.L * Material.Kd * LDotN;
-	vec3 specula = vec3(0.0, 0.0, 0.0);
-	if (LDotN > 0.0) {
-		if (HDotN == 0.0) HDotN =1.0;
-		specula = Light.L * Material.Ks * pow(HDotN, Material.Shininess); 
-	}
-	dif = ambient + diffuse;
-	return specula;
-}
+out vec4 FragColor;
+
+uniform sampler2D Tex;
 
 void main() {
-	vec3 dif;
-	vec3 spe;
+	if (gl_FrontFacing) {
+		vec3 n = normalize(Normal), s = normalize(vec3(Light.Position - Position));
+		vec3 v = normalize(vec3(-Position)), r = reflect(-s, n );
+		float sDotN = max( dot( s, n ), 0.0 );
+ 
+		vec3 ambient = Light.La * Material.Ka;
+		vec3 diffuse = Light.Ld * Material.Kd * sDotN;
+		vec3 spec = Light.Ls * Material.Ks * pow( max( dot(r,v) , 0.0 ), Material.Shininess ); 
+		vec4 texColour = texture(Tex, TexCoord);
 
-	vec4 texColor;
-	vec3 texNormal;
-    texNormal = normalize(texture(NormalTex, TexCoord).rgb);	
-	if (gl_FrontFacing) 
-		spe = phoneShading(texNormal, P, dif); 
-	else
-		spe = phoneShading(-N, P, dif);
-
-	texColor = texture(Tex, TexCoord);
-   
-   
-	if ((texColor.r + texColor.g + texColor.b) < 1.7) {
-		discard;
+		FragColor = vec4(ambient + diffuse, 1) * texColour + vec4(spec, 1); // Illuminated textures
+		//FragColor = vec4(ambient + diffuse, 1)  + vec4(spec, 1); // Illuminated
+		//FragColor = vec4(1, 1, 1, 1); // Colour
 	}
-	else {
-		FragColor =  vec4(dif, 1.0) * texColor + vec4(spe, 1.0);
-	}
-    	
-	//FragColor = vec4(dif, 1.0) * texColor  + vec4(spe, 1.0);
 }

@@ -16,10 +16,12 @@ public:
 	
 	void Init(ShaderProgramme* shader);
 
+	static Mesh GenerateTorus(GLuint stacks, GLuint slices, GLfloat innerRadius, GLfloat outerRadius);
 	static std::vector<Mesh> ImportMeshes(std::string filename, bool verboseLog = false);
 
 	GLuint vertexArrayObject, vertexCount;
 private:
-	GLuint bufferCount = 3;
+	static void fixFace(Mesh* mesh, Face* face);
+	GLuint bufferCount = 2;
 	GLuint* vertexBufferObjects = new GLuint[bufferCount];
 };

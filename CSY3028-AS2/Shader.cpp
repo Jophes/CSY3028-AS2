@@ -8,8 +8,9 @@ Shader::Shader() {
 }
 
 
-Shader::Shader(const char* fileName, GLuint shaderType) {
-	shaderObj = glCreateShader(shaderType);
+Shader::Shader(const char* fileName, ShaderType shaderType) {
+	type = shaderType;
+	shaderObj = glCreateShader((type == ShaderType::VertexShader ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER));
 	if (shaderObj == 0) {
 		std::cout << "Shader failed file: " + *fileName << std::endl;
 		exit(1);
@@ -28,7 +29,7 @@ Shader::Shader(const char* fileName, GLuint shaderType) {
 	glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &result);
 	if (result == GL_FALSE) {
 		// Print type of shader being compiled
-		std::cout << GetShaderName(shaderType) << " compilation failed" << std::endl;
+		std::cout << GetShaderName(type) << " compilation failed" << std::endl;
 
 		// Print out compilation error
 		GLint logLen;
@@ -42,7 +43,7 @@ Shader::Shader(const char* fileName, GLuint shaderType) {
 		}
 	}
 	else {
-		std::cout << GetShaderName(shaderType) << " compilation succeeded: " << shaderObj  << std::endl;
+		std::cout << GetShaderName(type) << " compilation succeeded: " << shaderObj  << std::endl;
 	}
 }
 
@@ -62,12 +63,12 @@ std::string Shader::ReadFile(const char* fileName) {
 	return shader_str;
 }
 
-std::string Shader::GetShaderName(GLuint shaderType) {
+std::string Shader::GetShaderName(ShaderType shaderType) {
 	switch (shaderType) {
-	case GL_VERTEX_SHADER:
+	case VertexShader:
 		return "Vertex shader";
 		break;
-	case GL_FRAGMENT_SHADER:
+	case FragmentShader:
 		return "Fragment shader";
 		break;
 	default:

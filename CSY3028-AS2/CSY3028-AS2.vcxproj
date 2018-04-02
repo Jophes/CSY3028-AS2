@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Shader.h" />
@@ -151,7 +153,15 @@
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cube.mtl" />
+    <None Include="cube.mtl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="high_torus.mtl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="monkey.mtl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="phong.frag" />
     <None Include="phong.vert" />
     <None Include="shader.frag" />
@@ -160,8 +170,24 @@
   <ItemGroup>
     <None Include="cube.obj">
       <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="cube2.obj">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="brick.bmp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="sun.bmp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="high_torus.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="monkey.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

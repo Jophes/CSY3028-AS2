@@ -7,8 +7,8 @@ ShaderProgramme::ShaderProgramme() {
 }
 
 ShaderProgramme::ShaderProgramme(const char* vertName, const char* fragName) {
-	vertex = new Shader(vertName, GL_VERTEX_SHADER);
-	fragment = new Shader(fragName, GL_FRAGMENT_SHADER);
+	vertex = new Shader(vertName, ShaderType::VertexShader);
+	fragment = new Shader(fragName, ShaderType::FragmentShader);
 
 	programme = glCreateProgram();
 	if (programme == 0) {
@@ -18,9 +18,6 @@ ShaderProgramme::ShaderProgramme(const char* vertName, const char* fragName) {
 
 	glAttachShader(programme, *vertex->GetShader());
 	glAttachShader(programme, *fragment->GetShader());
-
-	/*glBindAttribLocation(programme, 0, "VertexPosition");
-	glBindAttribLocation(programme, 1, "VertexColour");*/
 
 	glLinkProgram(programme);
 

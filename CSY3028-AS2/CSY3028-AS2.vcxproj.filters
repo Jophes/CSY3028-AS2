@@ -34,6 +34,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -94,14 +100,29 @@
     <None Include="cube.obj">
       <Filter>Resources</Filter>
     </None>
-    <None Include="cube2.obj">
-      <Filter>Resources</Filter>
-    </None>
     <None Include="phong.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="phong.vert">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="high_torus.mtl">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="monkey.mtl">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="brick.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="high_torus.obj">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="monkey.obj">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="sun.bmp">
+      <Filter>Resources</Filter>
     </None>
   </ItemGroup>
 </Project>

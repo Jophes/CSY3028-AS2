@@ -16,5 +16,7 @@ public:
 	int width, height;
 
 	GLuint id;
+private:
+	GLuint textureId;
 };
 

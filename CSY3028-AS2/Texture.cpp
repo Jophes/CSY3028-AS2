@@ -184,7 +184,8 @@ Texture::Texture(const char* filename)
 }
 
 void Texture::Init(GLuint activeTexture) {
-	glActiveTexture(activeTexture);
+	textureId = activeTexture;
+	glActiveTexture(textureId);
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
 	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);

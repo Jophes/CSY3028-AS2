@@ -6,14 +6,14 @@
 class Material {
 public:
 	Material();
-	Material(ShaderProgramme* program);
+	Material(ShaderProgramme* program, Texture* texture);
 
 	void Init();
 
 	GLuint*  GetShaderProg();
+	void SetActive();
 private:
 	ShaderProgramme* shaderProg;
 	Texture* texture;
-	Texture* normal;
 };
 

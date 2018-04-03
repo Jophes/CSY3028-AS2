@@ -4,9 +4,13 @@ Material::Material() {
 
 }
 
+Material::Material(ShaderProgramme* program) {
+	shaderProg = program;
+}
 Material::Material(ShaderProgramme* program, Texture* tex) {
 	shaderProg = program;
 	texture = tex;
+	textureSet = true;
 }
 
 GLuint* Material::GetShaderProg() {
@@ -14,7 +18,12 @@ GLuint* Material::GetShaderProg() {
 }
 
 void Material::SetActive() {
-	glUniform1i(glGetUniformLocation(shaderProg->programme, "Tex"), texture->id - 1);
+	if (textureSet) {
+		glUniform1i(glGetUniformLocation(shaderProg->programme, "Tex"), texture->id - 1);
+	}
+	else {
+		glUniform1i(glGetUniformLocation(shaderProg->programme, "Tex"), 0);
+	}
 }
 
 void Material::Init() {

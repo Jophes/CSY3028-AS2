@@ -41,4 +41,7 @@ void main() {
 		//FragColor = vec4(ambient + diffuse, 1)  + vec4(spec, 1); // Illuminated
 		//FragColor = vec4(1, 1, 1, 1); // Colour
 	}
+	else {
+		discard;
+	}
 }

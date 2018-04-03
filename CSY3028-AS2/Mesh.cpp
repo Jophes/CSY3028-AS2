@@ -247,30 +247,30 @@ Mesh Mesh::GenerateTorus(GLuint stacks, GLuint slices, GLfloat radius1, GLfloat 
 
 	// Normals
 	torus.normals.resize(torus.vertices.size());
-	for (int seg = 0; seg <= slices; seg++)
+	for (GLuint slice = 0; slice <= slices; slice++)
 	{
-		int currSeg = seg == slices ? 0 : seg;
+		GLuint curSlice = slice == slices ? 0 : slice;
 
-		float t1 = (float)currSeg / slices * M_2_PI;
+		float t1 = (float)curSlice / slices * M_2_PI;
 		glm::vec3 r1 = glm::vec3(cos(t1) * radius1, 0.0f, sin(t1) * radius1);
 
-		for (int side = 0; side <= stacks; side++)
+		for (GLuint stack = 0; stack <= stacks; stack++)
 		{
-			torus.normals[side + seg * (stacks + 1)] = (torus.vertices[side + seg * (stacks + 1)] - r1);
-			GLfloat magnitude = sqrt(pow(torus.normals[side + seg * (stacks + 1)].x, 2) + pow(torus.normals[side + seg * (stacks + 1)].y, 2) + pow(torus.normals[side + seg * (stacks + 1)].z, 2));
+			torus.normals[stack + slice * (stacks + 1)] = (torus.vertices[stack + slice * (stacks + 1)] - r1);
+			GLfloat magnitude = sqrt(pow(torus.normals[stack + slice * (stacks + 1)].x, 2) + pow(torus.normals[stack + slice * (stacks + 1)].y, 2) + pow(torus.normals[stack + slice * (stacks + 1)].z, 2));
 			if (magnitude != 0) {
-				torus.normals[side + seg * (stacks + 1)] /= magnitude;
+				torus.normals[stack + slice * (stacks + 1)] /= magnitude;
 			}
 		}
 	}
 
 	// UVs
 	torus.textures.resize(torus.vertices.size());
-	for (int seg = 0; seg <= slices; seg++)
+	for (GLuint slice = 0; slice <= slices; slice++)
 	{
-		for (int side = 0; side <= stacks; side++)
+		for (GLuint stack = 0; stack <= stacks; stack++)
 		{
-			torus.textures[side + seg * (stacks + 1)] = glm::vec2((float)seg / slices, (float)side / stacks);
+			torus.textures[stack + slice * (stacks + 1)] = glm::vec2((float)slice / slices, (float)stack / stacks);
 		}
 	}
 
@@ -279,12 +279,12 @@ Mesh Mesh::GenerateTorus(GLuint stacks, GLuint slices, GLfloat radius1, GLfloat 
 	GLuint nbTriangles = nbFaces * 2;
 	GLuint nbIndexes = nbTriangles * 3;
 
-	for (GLuint seg = 0; seg <= slices; seg++)
+	for (GLuint slice = 0; slice <= slices; slice++)
 	{
-		for (GLuint side = 0; side <= stacks; side++)
+		for (GLuint stack = 0; stack <= stacks; stack++)
 		{
-			int current = side + seg * (stacks + 1);
-			int next = side + (seg < (slices) ? (seg + 1) * (stacks + 1) : 0);
+			int current = stack + slice * (stacks + 1);
+			int next = stack + (slice < (slices) ? (slice + 1) * (stacks + 1) : 0);
 			
 			if (torus.faces.size() < nbTriangles)
 			{

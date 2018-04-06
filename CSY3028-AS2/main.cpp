@@ -122,7 +122,7 @@ void mouse(int button, int state, int x, int y) {
 void motion(int x, int y) {
 	glm::vec2 newPos = glm::vec2(x, y);
 	glm::vec2 delta = mPos - newPos;
-	if (selected >= 0 && selected < models.size()) {
+	if (selected >= 0 && selected < (int)models.size()) {
 		if (rotating) {
 			models[selected].rotation.z += delta.x * 0.05f;
 			models[selected].rotation.y += delta.y * 0.05f;

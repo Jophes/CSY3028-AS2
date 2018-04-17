@@ -22,7 +22,7 @@
 double secs, lastSecs;
 glm::vec2 window = glm::vec2(600, 600);
 ShaderProgramme programme;
-Mesh mCar, mTorus, mShelf, mWalls, mLamp, mTable;
+Mesh mCar, mTorusThin, mTorusMid, mTorusBig, mShelf, mWalls, mLamp, mTable;
 Camera camera;
 Texture brick = Texture("brick.bmp"), sun = Texture("sun.bmp"), car = Texture("car.bmp"), wood = Texture("wood.bmp");
 Texture curtain = Texture("curtain.bmp"), fabric = Texture("fabric.bmp"), grass = Texture("grass.bmp"), soil = Texture("soil.bmp"), sweet = Texture("sweet.bmp");
@@ -164,7 +164,9 @@ int main(int argc, char **argv) {
 	}
 
 	//torus = Mesh::GenerateTorus(4, 6, 0.7f, 0.3f);
-	mTorus = Mesh::GenerateTorus(24, 48, 0.575f, 0.25f);
+	mTorusThin = Mesh::GenerateTorus(24, 48, 0.625f, 0.10f);
+	mTorusMid = Mesh::GenerateTorus(24, 48, 0.575f, 0.25f);
+	mTorusBig = Mesh::GenerateTorus(24, 48, 0.475f, 0.45f);
 	//torus = Mesh::GenerateTorus(512, 512, 0.7f, 0.3f);
 
 	// Setup glut
@@ -198,7 +200,9 @@ int main(int argc, char **argv) {
 	
 	// Generate objects
 	mCar.Init(&programme);
-	mTorus.Init(&programme);
+	mTorusThin.Init(&programme);
+	mTorusMid.Init(&programme);
+	mTorusBig.Init(&programme);
 	mShelf.Init(&programme);
 	mWalls.Init(&programme);
 	mLamp.Init(&programme);
@@ -248,7 +252,7 @@ int main(int argc, char **argv) {
 	for (GLuint i = 0; i < 9; i++)
 	{
 		if (models.size() <= i) {
-			models.push_back(Model(&camera, &mTorus, &(materials[i % materials.size()])));
+			models.push_back(Model(&camera, (i % 3 == 0 ? &mTorusThin : (i % 3 == 1 ? &mTorusMid : &mTorusBig)), &(materials[i % materials.size()])));
 			models.back().scale = glm::vec3(1.0, 1.0, 1.0);
 			models.back().rotation = glm::vec3(3.1459 * 0.5, 0, 0);
 		}
